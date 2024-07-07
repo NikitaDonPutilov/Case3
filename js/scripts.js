@@ -48,7 +48,8 @@ function createPost(event) {
     }
 
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    posts.push({ id: Date.now(), title, content, tags, isPrivate, author: currentUser, comments: [] });
+    const newPost = { id: Date.now(), title, content, tags, isPrivate, author: currentUser, comments: [] };
+    posts.push(newPost);
     localStorage.setItem('posts', JSON.stringify(posts));
     alert('Post created');
     window.location.href = 'index.html';
