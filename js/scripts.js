@@ -1,3 +1,4 @@
+// Функция для регистрации пользователя
 function registerUser(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
@@ -16,6 +17,7 @@ function registerUser(event) {
     window.location.href = 'login.html';
 }
 
+// Функция для авторизации пользователя
 function loginUser(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;
@@ -29,7 +31,7 @@ function loginUser(event) {
         return;
     }
 
-    localStorage.setItem('currentUser', username);
+    localStorage.setItem('currentUser', JSON.stringify(user));
     alert('Login successful');
     window.location.href = 'index.html';
 }
