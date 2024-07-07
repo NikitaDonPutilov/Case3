@@ -38,8 +38,6 @@ function createPost(event) {
     event.preventDefault();
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
-    const tags = document.getElementById('tags').value.split(',').map(tag => tag.trim());
-    const isPrivate = document.getElementById('private').checked;
     const currentUser = localStorage.getItem('currentUser');
 
     if (!currentUser) {
@@ -47,31 +45,34 @@ function createPost(event) {
         return;
     }
 
+    // Load existing posts from localStorage or initialize an empty array
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    const newPost = { id: Date.now(), title, content, tags, isPrivate, author: currentUser, comments: [] };
-    posts.push(newPost);
+
+    // Push the new post object into the posts array
+    posts.push({ id: Date.now(), title, content, author: currentUser });
+
+    // Save updated posts array back to localStorage
     localStorage.setItem('posts', JSON.stringify(posts));
+
     alert('Post created');
-    window.location.href = 'index.html';
+    window.location.href = 'index.html'; // Redirect to home page after post creation
 }
 
 function displayPosts() {
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
     const postsDiv = document.getElementById('posts');
-    postsDiv.innerHTML = '';
+    postsDiv.innerHTML = ''; // Clear previous content
 
+    // Iterate over each post and create HTML elements to display them
     posts.forEach(post => {
-        if (!post.isPrivate) {
-            const postDiv = document.createElement('div');
-            postDiv.innerHTML = `
-                <h3>${post.title}</h3>
-                <p>${post.content}</p>
-                <p><strong>Author:</strong> ${post.author}</p>
-                <p><strong>Tags:</strong> ${post.tags.join(', ')}</p>
-                <a href="view_post.html?id=${post.id}">View</a>
-            `;
-            postsDiv.appendChild(postDiv);
-        }
+        const postDiv = document.createElement('div');
+        postDiv.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <p><strong>Author:</strong> ${post.author}</p>
+            <a href="view_post.html?id=${post.id}">View</a>
+        `;
+        postsDiv.appendChild(postDiv); // Append each post element to postsDiv
     });
 }
 
